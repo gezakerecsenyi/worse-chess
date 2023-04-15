@@ -92,7 +92,7 @@ function markPossibleMoves(unmark) {
         } else {
             square.classList.add('candidate');
         }
-    })
+    });
 }
 
 function handleSquareClick(e) {
@@ -154,7 +154,10 @@ function handleSquareClick(e) {
                     setPiece(rank, 3, Pieces.Rook, turn);
                 }
             } else {
-                document.getElementById(e.target.id).className = selectedSquare.className;
+                const targetSquare = document.getElementById(e.target.id);
+                targetSquare.className = getPiece(selectedSquare) === Pieces.Pawn && [0, 7].includes(getRank(targetSquare)) ?
+                    getPieceClass(Pieces.Knight, turn) :
+                    selectedSquare.className;
                 selectedSquare.className = '';
             }
 
