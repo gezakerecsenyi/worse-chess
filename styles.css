@@ -8,6 +8,7 @@
   border: 1px solid black;
   text-align: center;
   font-size: 40px;
+  position: relative;
   transition: background-color 150ms ease-in-out;
 }
 #board td.selected {
@@ -16,8 +17,11 @@
 #board td.candidate::after {
   content: "";
   display: inline-block;
+  position: absolute;
   width: 20px;
   height: 20px;
+  top: 20px;
+  left: 20px;
   border-radius: 40px;
   background-color: rgba(0, 129, 0, 0.5);
 }
