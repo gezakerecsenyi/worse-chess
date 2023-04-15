@@ -76,6 +76,14 @@ let lastMoveTo = null;
 
 let turn = Colors.White;
 
+let whiteKingHasMoved = false;
+let whiteLRookHasMoved = false;
+let whiteRRookHasMoved = false;
+
+let blackKingHasMoved = false;
+let blackLRookHasMoved = false;
+let blackRRookHasMoved = false;
+
 function markPossibleMoves(unmark) {
     possibleMoves?.forEach((move) => {
         const square = document.getElementById(move[0]);
@@ -99,8 +107,57 @@ function handleSquareClick(e) {
             lastMoveTo = e.target.id;
 
             selectedSquare.classList.remove('selected');
-            document.getElementById(e.target.id).className = selectedSquare.className;
-            selectedSquare.className = '';
+
+            if (getPiece(selectedSquare) === Pieces.King) {
+                if (turn === Colors.White) {
+                    whiteKingHasMoved = true;
+                } else {
+                    blackKingHasMoved = true;
+                }
+            }
+
+            function checkTargetForRook(square) {
+                if (getPiece(square) === Pieces.Rook) {
+                    if (getColor(square) === Colors.White) {
+                        if (getRank(square) === 7) {
+                            if (getFile(square) === 0) {
+                                whiteLRookHasMoved = true;
+                            } else if (getFile(square) === 7) {
+                                whiteRRookHasMoved = true;
+                            }
+                        }
+                    } else {
+                        if (getRank(square) === 0) {
+                            if (getFile(square) === 0) {
+                                blackLRookHasMoved = true;
+                            } else if (getFile(square) === 7) {
+                                blackRRookHasMoved = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            checkTargetForRook(e.target);
+            checkTargetForRook(selectedSquare);
+
+            if (lookupRes[2]) {
+                selectedSquare.className = '';
+                document.getElementById(e.target.id).className = '';
+
+                const rank = getRank(selectedSquare);
+                if (getFile(e.target) === 7) {
+                    setPiece(rank, 6, Pieces.King, turn);
+                    setPiece(rank, 5, Pieces.Rook, turn);
+                } else {
+                    setPiece(rank, 2, Pieces.King, turn);
+                    setPiece(rank, 3, Pieces.Rook, turn);
+                }
+            } else {
+                document.getElementById(e.target.id).className = selectedSquare.className;
+                selectedSquare.className = '';
+            }
+
             turn = turn === Colors.White ? Colors.Black : Colors.White;
         }
 
@@ -197,6 +254,24 @@ function calculatePossibleMoves() {
 
                 switch (piece) {
                     case Pieces.King: {
+                        const targetSquare = getSquare(compRank, compFile);
+                        const targetPiece = getPiece(targetSquare);
+                        const targetColor = getColor(targetSquare);
+
+                        if (color === Colors.White && !whiteKingHasMoved && targetPiece === Pieces.Rook && targetColor === Colors.White) {
+                            if (!whiteLRookHasMoved && compFile === 0) {
+                                return getSquare(7, 1).className === '' && getSquare(7, 2).className === '' && getSquare(7, 3).className === '' ? 3 : false;
+                            } else if (!whiteRRookHasMoved && compFile === 7) {
+                                return getSquare(7, 5).className === '' && getSquare(7, 6).className === '' ? 3 : false;
+                            }
+                        } else if (color === Colors.Black && !blackKingHasMoved && targetPiece === Pieces.Rook && targetColor === Colors.Black) {
+                            if (!blackLRookHasMoved && compFile === 0) {
+                                return getSquare(0, 1).className === '' && getSquare(0, 2).className === '' && getSquare(0, 3).className === '' ? 3 : false;
+                            } else if (!blackRRookHasMoved && compFile === 7) {
+                                return getSquare(0, 5).className === '' && getSquare(0, 6).className === '' ? 3 : false;
+                            }
+                        }
+
                         return Math.abs(compRank - rank) <= 1 && Math.abs(compFile - file) <= 1;
                     }
 
@@ -281,10 +356,10 @@ function calculatePossibleMoves() {
                 }
             }
 
-            if (!(compRank === rank && compFile === file) && getColor(getSquare(compRank, compFile)) !== color) {
+            if (!(compRank === rank && compFile === file)) {
                 const res = doesPass();
-                if (res) {
-                    possibleMoves.push([getId(compRank, compFile), res === 2]);
+                if (res && (getColor(getSquare(compRank, compFile)) !== color || res === 3)) {
+                    possibleMoves.push([getId(compRank, compFile), res === 2, res === 3]);
                 }
             }
         }
