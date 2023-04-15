@@ -76,6 +76,17 @@ let lastMoveTo = null;
 
 let turn = Colors.White;
 
+function markPossibleMoves(unmark) {
+    possibleMoves?.forEach((move) => {
+        const square = document.getElementById(move[0]);
+        if (unmark) {
+            square.classList.remove('candidate');
+        } else {
+            square.classList.add('candidate');
+        }
+    })
+}
+
 function handleSquareClick(e) {
     console.log('got click', selectedSquare, possibleMoves);
 
@@ -96,6 +107,7 @@ function handleSquareClick(e) {
         }
 
         selectedSquare.classList.remove('selected');
+        markPossibleMoves(true);
         selectedSquare = null;
         possibleMoves = null;
     } else {
@@ -104,7 +116,9 @@ function handleSquareClick(e) {
             selectedSquare?.classList.remove('selected');
             selectedSquare = proposedSquare;
             selectedSquare.classList.add('selected');
+            markPossibleMoves(true);
             calculatePossibleMoves();
+            markPossibleMoves(false);
         }
     }
 }

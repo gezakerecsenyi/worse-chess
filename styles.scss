@@ -13,6 +13,15 @@
             background-color: #eadac9;
         }
 
+        &.candidate::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 40px;
+            background-color: rgba(0, 129, 0, 0.5);
+        }
+
         &.white {
             color: #d3a154;
         }

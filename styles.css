@@ -13,6 +13,14 @@
 #board td.selected {
   background-color: #eadac9;
 }
+#board td.candidate::after {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 40px;
+  background-color: rgba(0, 129, 0, 0.5);
+}
 #board td.white {
   color: #d3a154;
 }
