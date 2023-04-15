@@ -1,0 +1,44 @@
+#board {
+    border-collapse: collapse;
+
+    td {
+        width: 60px;
+        height: 60px;
+        border: 1px solid black;
+        text-align: center;
+        font-size: 40px;
+        transition: background-color 150ms ease-in-out;
+
+        &.selected {
+            background-color: #eadac9;
+        }
+
+        &.white {
+            color: #d3a154;
+        }
+
+        &.pawn::before {
+            content: "♟";
+        }
+
+        &.knight::before {
+            content: "♞";
+        }
+
+        &.rook::before {
+            content: "♜";
+        }
+
+        &.bishop::before {
+            content: "♝";
+        }
+
+        &.king::before {
+            content: "♚";
+        }
+
+        &.queen::before {
+            content: "♛";
+        }
+    }
+}

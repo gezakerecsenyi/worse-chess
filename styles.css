@@ -1,0 +1,38 @@
+@charset "UTF-8";
+#board {
+  border-collapse: collapse;
+}
+#board td {
+  width: 60px;
+  height: 60px;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 40px;
+  transition: background-color 150ms ease-in-out;
+}
+#board td.selected {
+  background-color: #eadac9;
+}
+#board td.white {
+  color: #d3a154;
+}
+#board td.pawn::before {
+  content: "♟";
+}
+#board td.knight::before {
+  content: "♞";
+}
+#board td.rook::before {
+  content: "♜";
+}
+#board td.bishop::before {
+  content: "♝";
+}
+#board td.king::before {
+  content: "♚";
+}
+#board td.queen::before {
+  content: "♛";
+}
+
+/*# sourceMappingURL=styles.css.map */
