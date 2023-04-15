@@ -88,8 +88,6 @@ function markPossibleMoves(unmark) {
 }
 
 function handleSquareClick(e) {
-    console.log('got click', selectedSquare, possibleMoves);
-
     const lookupRes = possibleMoves?.find(q => q[0] === e.target.id);
     if (lookupRes) {
         if (selectedSquare) {
@@ -175,7 +173,7 @@ function calculatePossibleMoves() {
                         const minFile = Math.min(compFile, file) + 1;
                         const maxFile = Math.max(compFile, file) - 1;
 
-                        const compIsMin = minFile === compFile;
+                        const compIsMin = minFile === compFile + 1;
 
                         if (minFile > maxFile) {
                             return true;
@@ -186,7 +184,6 @@ function calculatePossibleMoves() {
                         let newRank = (compIsMin ? compRank : rank);
                         for (let newFile = minFile; newFile <= maxFile; newFile++) {
                             newRank += rankDirection;
-
                             if (getSquare(newRank, newFile).className !== '') {
                                 return false;
                             }
